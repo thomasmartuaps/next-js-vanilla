@@ -12,6 +12,55 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.ts`. The page auto-updates as you edit the file.
 
+### For Production Usage
+
+Build the application for production usage:
+
+```bash
+yarn build
+```
+
+### For Run Production Server
+
+Start a Next.js production server:
+
+```bash
+yarn start
+```
+
+### Verify Code
+
+Verify code quality with eslint (typescript) individually:
+
+```bash
+yarn lint
+```
+
+### Prettier Code
+
+Prettier code individually:
+
+```bash
+yarn format
+```
+
+### Import Code
+
+Using absolute path, for example:
+
+```
+import Layout '@components/Layout.tsx';
+```
+
+available absolute path:
+
+```
+@components refer to folder components in root folder
+@pages refer to folder pages in root folder
+@public refer to folder public in root folder
+@styles refer to folder styles in root folder
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
