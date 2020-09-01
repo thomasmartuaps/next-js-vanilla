@@ -49,7 +49,11 @@ yarn format
 Using absolute path, for example:
 
 ```
+// use this
 import Layout '@components/Layout.tsx';
+
+// instead this:
+import Layout '../../components/Layout.tsx';
 ```
 
 available absolute path:
