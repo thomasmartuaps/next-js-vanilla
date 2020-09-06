@@ -45,6 +45,7 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
-    'simple-import-sort/sort': 'error'
+    'simple-import-sort/sort': 'error',
+    "import/no-unresolved": "off"
   },
 };
