@@ -20,10 +20,27 @@ const deleteUserData = (req: NextApiRequest, res: NextApiResponse): void => {
     })
     .finally(async () => {
       await prisma.$disconnect();
+      return res.status(200).json({
+        message: 'delete success',
+      });
     });
-  res.status(200).json({
-    message: 'delete success',
-  });
 };
 
-export default deleteUserData;
+export default (req: NextApiRequest, res: NextApiResponse): any => {
+  switch (req.method) {
+    case 'GET':
+      return res.status(400).json({ message: 'wrong method' });
+
+    case 'POST':
+      return res.status(400).json({ message: 'wrong method' });
+
+    case 'PUT':
+      return res.status(400).json({ message: 'wrong method' });
+
+    case 'DELETE':
+      return deleteUserData(req, res);
+
+    default:
+      return res.status(400).json({ message: 'wrong method' });
+  }
+};

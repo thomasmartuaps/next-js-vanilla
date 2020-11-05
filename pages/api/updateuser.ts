@@ -1,26 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 
-// eslint-disable-next-line
 async function updateUser(
-  // eslint-disable-next-line
   email: string | any,
-  // eslint-disable-next-line
   password: string | any,
-  // eslint-disable-next-line
   id: number | any
 ) {
-  // eslint-disable-next-line
-  await prisma.user.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      username: email,
-      passwords: password,
-    },
+  const salt: any = process.env.NEXT_PUBLIC_SALT;
+  let hashPass: string;
+  bcrypt.hash(password, Number(salt), async (err, hash) => {
+    hashPass = hash;
+    await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        username: email,
+        passwords: hashPass,
+      },
+    });
   });
 }
 
@@ -37,4 +40,21 @@ const updateUserData = (req: NextApiRequest, res: NextApiResponse): void => {
   });
 };
 
-export default updateUserData;
+export default (req: NextApiRequest, res: NextApiResponse): any => {
+  switch (req.method) {
+    case 'GET':
+      return res.status(400).json({ message: 'wrong method' });
+
+    case 'POST':
+      return res.status(400).json({ message: 'wrong method' });
+
+    case 'PUT':
+      return updateUserData(req, res);
+
+    case 'DELETE':
+      return res.status(400).json({ message: 'wrong method' });
+
+    default:
+      return res.status(400).json({ message: 'wrong method' });
+  }
+};
