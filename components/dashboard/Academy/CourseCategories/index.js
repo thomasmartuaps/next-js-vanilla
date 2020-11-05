@@ -2,8 +2,6 @@ import React from 'react';
 import AppCard from '../../../../@crema/core/AppCard';
 import Box from '@material-ui/core/Box';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 
