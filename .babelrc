@@ -13,7 +13,8 @@
           "@components": "./components",
           "@pages": "./pages",
           "@public": "./public",
-          "@styles": "./styles"
+          "@styles": "./styles",
+          "@configJWT": "./configJWT"
         }
       }
     ]
