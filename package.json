@@ -6,16 +6,23 @@
     "dev": "yarn format && yarn lint && next dev",
     "build": "yarn format && yarn lint && next build",
     "start": "yarn format && yarn lint && next start",
-    "format": "prettier --write './**/*.{ts,tsx,css,scss,html}'",
-    "lint": "eslint --fix . --ext '.ts,.tsx'"
+    "format": "prettier --write ./**/*.{ts,tsx,css,scss,html}",
+    "lint": "eslint --fix . --ext .ts,.tsx"
   },
   "dependencies": {
+    "@prisma/client": "^2.10.2",
+    "@types/bcrypt": "^3.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/next": "^9.0.0",
+    "bcrypt": "^5.0.0",
+    "jsonwebtoken": "^8.5.1",
     "next": "9.5.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "sass": "^1.26.10"
   },
   "devDependencies": {
+    "@prisma/cli": "^2.10.2",
     "@types/node": "^14.6.2",
     "@types/react": "^16.9.49",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
