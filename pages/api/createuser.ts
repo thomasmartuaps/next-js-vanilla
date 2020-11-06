@@ -11,7 +11,6 @@ async function addUser(email: string | any, password: string | any) {
   let hashPass: string;
   bcrypt.hash(password, Number(salt), async (err, hash) => {
     hashPass = hash;
-    // eslint-disable-next-line
     const createUser = await prisma.user.create({
       data: {
         username: email,
