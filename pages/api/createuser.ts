@@ -20,9 +20,23 @@ async function addUser(email: string | any, password: string | any) {
     });
   });
 }
+async function checkUser(email: string) {
+  const user = await prisma.user.findFirst({
+    where: {
+      username: email,
+    },
+  });
+  return user;
+}
 
-const addUserData = (req: NextApiRequest, res: NextApiResponse): void => {
-  // eslint-disable-next-line
+const addUserData = async (req: NextApiRequest, res: NextApiResponse) => {
+  const result = await checkUser(req.body.username);
+  if (result) {
+    return res.status(400).json({
+      message: 'user already exist',
+    });
+  }
+
   addUser(req.body.username, req.body.password)
     .catch((e) => {
       throw e;
@@ -30,7 +44,8 @@ const addUserData = (req: NextApiRequest, res: NextApiResponse): void => {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.status(200).json({
+
+  return res.status(200).json({
     message: 'create success',
   });
 };
