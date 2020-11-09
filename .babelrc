@@ -14,7 +14,8 @@
           "@pages": "./pages",
           "@public": "./public",
           "@styles": "./styles",
-          "@configJWT": "./configJWT"
+          "@configJWT": "./configJWT",
+          "@publicKey": "./publicKey"
         }
       }
     ]
