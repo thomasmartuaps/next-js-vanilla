@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -60,24 +61,38 @@ export default function SignIn(): JSX.Element {
   const Router = useRouter();
   const classes = useStyles();
 
-  function usernameInput(event: React.ChangeEvent<HTMLInputElement>) {
-    // eslint-disable-next-line
-    console.log(event.target.value);
+  const usernameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
-  }
+  };
 
-  function passInput(event: React.ChangeEvent<HTMLInputElement>) {
-    // eslint-disable-next-line
-    console.log(event.target.value);
+  const passInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
-  }
+  };
 
-  function submitLogin(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  const submitLogin = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
-    // eslint-disable-next-line
-    console.log('submitting');
-    sessionStorage.setItem('token', 'faketoken');
-  }
+    axios({
+      method: 'POST',
+      url: 'http://localhost:3000/api/login',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      data: {
+        email: username,
+        password,
+      },
+    })
+      .then((res) => {
+        sessionStorage.setItem('token', res.data.token);
+        Router.push('/');
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
     if (sessionStorage.getItem('token')) {

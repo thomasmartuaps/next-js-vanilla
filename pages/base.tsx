@@ -1,3 +1,6 @@
+import Content from '@components/Content';
+import Header from '@components/Header';
+import Navigator from '@components/Navigator';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Link from '@material-ui/core/Link';
@@ -12,10 +15,6 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-
-import Content from '../components/Content';
-import Header from '../components/Header';
-import Navigator from '../components/Navigator';
 
 function Copyright() {
   return (
@@ -170,34 +169,9 @@ const styles = createStyles({
     background: '#eaeff1',
   },
   header: {
-    // transition: theme.transitions.create('margin', {
-    //   easing: theme.transitions.easing.sharp,
-    //   duration: theme.transitions.duration.leavingScreen,
-    // }),
-    // marginLeft: -drawerWidth,
-    // paddingLeft: drawerWidth,
-    // width: '100vw',
-    // transition: theme.transitions.create(['margin', 'width'], {
-    //   easing: theme.transitions.easing.sharp,
-    //   duration: theme.transitions.duration.leavingScreen,
-    // }),
     position: 'fixed',
     zIndex: 100,
   },
-  // appBarShift: {
-  // transition: theme.transitions.create('margin', {
-  //   easing: theme.transitions.easing.easeOut,
-  //   duration: theme.transitions.duration.enteringScreen,
-  // }),
-  // marginLeft: 0,
-  // paddingLeft: 0,
-  // width: `calc(100% - ${drawerWidth}px)`,
-  // marginLeft: drawerWidth,
-  // transition: theme.transitions.create(['margin', 'width'], {
-  //   easing: theme.transitions.easing.easeOut,
-  //   duration: theme.transitions.duration.enteringScreen,
-  // }),
-  // },
   appShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,

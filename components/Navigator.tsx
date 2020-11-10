@@ -21,8 +21,6 @@ import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
 import PermMediaOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActual';
 import PublicIcon from '@material-ui/icons/Public';
 import SettingsIcon from '@material-ui/icons/Settings';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
-import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
 import TimerIcon from '@material-ui/icons/Timer';
 import { Omit } from '@material-ui/types';
 import clsx from 'clsx';
@@ -65,7 +63,6 @@ const styles = (theme: Theme) =>
     item: {
       paddingTop: 1,
       paddingBottom: 1,
-      // color: 'rgba(255, 255, 255, 0.7)',
       '&:hover,&:focus': {
         backgroundColor: '#DEE3ED',
       },
@@ -73,7 +70,6 @@ const styles = (theme: Theme) =>
     itemNoHover: {
       paddingTop: 1,
       paddingBottom: 1,
-      // color: 'rgba(255, 255, 255, 0.7)',
     },
     itemFlex: {
       flex: 1,
@@ -96,7 +92,6 @@ const styles = (theme: Theme) =>
     },
     itemPrimary: {
       fontSize: 'inherit',
-      // color: '#707A89'
     },
     itemIcon: {
       minWidth: 'auto',
@@ -114,7 +109,6 @@ export interface NavigatorProps
 
 function Navigator(props: NavigatorProps) {
   const { classes, ...other } = props;
-  // const isDesktop = "1280px"
   const Router = useRouter();
 
   function logOut(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {

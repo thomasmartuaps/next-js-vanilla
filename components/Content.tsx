@@ -84,7 +84,6 @@ function Content(props: ContentProps) {
                     <Typography variant="h6">$350</Typography>
                     <Chip size="small" color="secondary" label="New $50" />
                   </CardContent>
-                  {/* <CardMedia className={classes.cardMedia} image="/images/salesIcon.png" /> */}
                 </Grid>
               </Card>
             </Grid>
@@ -103,7 +102,6 @@ function Content(props: ContentProps) {
                       <Chip size="small" color="secondary" label="New $50" />
                     </Skeleton>
                   </CardContent>
-                  {/* <CardMedia className={classes.cardMedia} image="/images/salesIcon.png" /> */}
                 </Grid>
               </Card>
             </Grid>
