@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-// import Hidden from '@material-ui/core/Hidden';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 // import Link from '@material-ui/core/Link';
@@ -14,16 +14,17 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
+// import Tab from '@material-ui/core/Tab';
+// import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
+// import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import HelpIcon from '@material-ui/icons/Help';
+import MenuIcon from '@material-ui/icons/Menu';
+// import HelpIcon from '@material-ui/icons/Help';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import SearchIcon from '@material-ui/icons/Search';
 import SmsIcon from '@material-ui/icons/Sms';
-// import MenuIcon from '@material-ui/icons/Menu';
+import clsx from 'clsx';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
 // import theme from '@styles/theme';
 import React from 'react';
@@ -71,6 +72,22 @@ const styles = (theme: Theme) =>
     inputRoot: {
       color: 'inherit',
     },
+    barPad: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+      width: '100vw',
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    barPadShift: {
+      width: `calc(100vw - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
@@ -93,44 +110,63 @@ const styles = (theme: Theme) =>
     },
   });
 
+const drawerWidth = 256;
+
 interface HeaderProps extends WithStyles<typeof styles> {
   onDrawerToggle: () => void;
+  opened: boolean;
 }
 
 function Header(props: HeaderProps): JSX.Element {
-  const { classes, onDrawerToggle } = props;
+  const { classes, onDrawerToggle, opened } = props;
 
   return (
     <>
       <AppBar
         component="div"
-        className={classes.secondaryBar}
         color="light"
+        className={clsx(classes.barPad, { [classes.barPadShift]: opened })}
         position="static"
         elevation={0}
       >
         <Toolbar>
+          {/* <Grid container spacing={1} alignItems="center"> */}
+          {/* <Hidden smUp> */}
+          <Grid item>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={onDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Grid>
+          {/* </Hidden> */}
+          {/* <Grid item xs /> */}
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
                 Authentication
               </Typography>
             </Grid>
-            <Grid item>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
+            <Hidden xsDown>
+              <Grid item>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
                 </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </div>
-            </Grid>
+              </Grid>
+            </Hidden>
             <Grid item>
               <Button
                 className={classes.button}
@@ -165,6 +201,29 @@ function Header(props: HeaderProps): JSX.Element {
           </Grid>
         </Toolbar>
       </AppBar>
+      <Hidden smUp>
+        <AppBar
+          color="light"
+          className={clsx(classes.barPad, { [classes.barPadShift]: opened })}
+          position="static"
+        >
+          <Grid item xs={12} sm={6}>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </div>
+          </Grid>
+        </AppBar>
+      </Hidden>
     </>
   );
 }

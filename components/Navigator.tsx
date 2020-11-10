@@ -14,6 +14,7 @@ import {
   withStyles,
 } from '@material-ui/core/styles';
 import DnsRoundedIcon from '@material-ui/icons/DnsRounded';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
 import PeopleIcon from '@material-ui/icons/People';
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
@@ -25,6 +26,7 @@ import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponen
 import TimerIcon from '@material-ui/icons/Timer';
 import { Omit } from '@material-ui/types';
 import clsx from 'clsx';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const categories = [
@@ -54,31 +56,47 @@ const styles = (theme: Theme) =>
       paddingBottom: theme.spacing(2),
     },
     categoryHeaderPrimary: {
-      color: theme.palette.common.white,
+      // color: theme.palette.common.white,
+    },
+    paper: {
+      background: '#ffffff',
+      color: '#707a89',
     },
     item: {
       paddingTop: 1,
       paddingBottom: 1,
-      color: 'rgba(255, 255, 255, 0.7)',
+      // color: 'rgba(255, 255, 255, 0.7)',
       '&:hover,&:focus': {
-        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        backgroundColor: '#DEE3ED',
       },
     },
+    itemNoHover: {
+      paddingTop: 1,
+      paddingBottom: 1,
+      // color: 'rgba(255, 255, 255, 0.7)',
+    },
+    itemFlex: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
     itemCategory: {
-      backgroundColor: '#232f3e',
-      boxShadow: '0 -1px 0 #404854 inset',
+      backgroundColor: '#FFFFFF',
+      boxShadow: '0 -1px 0 #EBEFF5 inset',
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
+      color: '#707A89',
     },
     firebase: {
       fontSize: 24,
       color: theme.palette.common.white,
     },
     itemActiveItem: {
-      color: '#4fc3f7',
+      color: '#de1b1b',
     },
     itemPrimary: {
       fontSize: 'inherit',
+      // color: '#707A89'
     },
     itemIcon: {
       minWidth: 'auto',
@@ -86,6 +104,7 @@ const styles = (theme: Theme) =>
     },
     divider: {
       marginTop: theme.spacing(2),
+      backgroundColor: '#EBEFF5',
     },
   });
 
@@ -95,10 +114,38 @@ export interface NavigatorProps
 
 function Navigator(props: NavigatorProps) {
   const { classes, ...other } = props;
+  // const isDesktop = "1280px"
+  const Router = useRouter();
+
+  function logOut(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    event.preventDefault();
+    sessionStorage.clear();
+    if (!sessionStorage.getItem('token')) {
+      Router.push('/');
+    }
+  }
 
   return (
-    <Drawer variant="permanent" {...other}>
+    <Drawer
+      variant="persistent"
+      {...other}
+      classes={{
+        paper: classes.paper,
+      }}
+    >
       <List disablePadding>
+        <ListItem
+          className={clsx(
+            classes.firebase,
+            classes.itemNoHover,
+            classes.itemCategory,
+            classes.itemFlex
+          )}
+        >
+          <ListItemAvatar>
+            <Avatar src="/images/logogram-telkom-warna.png" alt="M" />
+          </ListItemAvatar>
+        </ListItem>
         <ListItem
           className={clsx(classes.firebase, classes.item, classes.itemCategory)}
         >
@@ -106,11 +153,15 @@ function Navigator(props: NavigatorProps) {
             <Avatar alt="M" />
           </ListItemAvatar>
           <ListItemText
-            primary="Admin@Nutt.co.id"
+            primary={
+              <Typography style={{ color: '#444B55' }}>
+                Admin@Nutt.co.id
+              </Typography>
+            }
             secondary={
               <Typography
                 style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: '#707A89',
                   fontSize: 14,
                 }}
               >
@@ -162,6 +213,22 @@ function Navigator(props: NavigatorProps) {
           </React.Fragment>
         ))}
       </List>
+      <ListItem
+        className={clsx(classes.item, classes.itemCategory)}
+        button
+        onClick={(e) => logOut(e)}
+      >
+        <ListItemIcon className={classes.itemIcon}>
+          <ExitToAppIcon />
+        </ListItemIcon>
+        <ListItemText
+          classes={{
+            primary: classes.itemPrimary,
+          }}
+        >
+          Logout
+        </ListItemText>
+      </ListItem>
     </Drawer>
   );
 }

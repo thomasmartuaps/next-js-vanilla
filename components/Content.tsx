@@ -20,9 +20,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import SearchIcon from '@material-ui/icons/Search';
+import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 
-const cards = [1, 2, 3, 4];
+const cards = [true, false, true, false];
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,6 +59,9 @@ const styles = (theme: Theme) =>
     cardContent: {
       flexGrow: 1,
     },
+    skelZIndex: {
+      zIndex: 3,
+    },
   });
 
 export type ContentProps = WithStyles<typeof styles>;
@@ -65,23 +69,46 @@ export type ContentProps = WithStyles<typeof styles>;
 function Content(props: ContentProps) {
   const { classes } = props;
 
+  const loading = true;
+
   return (
     <>
       <Grid container spacing={4}>
-        {cards.map((card) => (
-          <Grid item key={card} xs={12} sm={6} md={3}>
-            <Card className={classes.card}>
-              <Grid container>
-                <CardContent className={classes.cardContent}>
-                  <Typography variant="body2">Total Sales</Typography>
-                  <Typography variant="h6">$350</Typography>
-                  <Chip size="small" color="secondary" label="New $50" />
-                </CardContent>
-                {/* <CardMedia className={classes.cardMedia} image="/images/salesIcon.png" /> */}
-              </Grid>
-            </Card>
-          </Grid>
-        ))}
+        {cards.map((cardBool) =>
+          cardBool ? (
+            <Grid item key={cardBool} xs={12} sm={6} md={3}>
+              <Card className={classes.card}>
+                <Grid container>
+                  <CardContent className={classes.cardContent}>
+                    <Typography variant="body2">Total Sales</Typography>
+                    <Typography variant="h6">$350</Typography>
+                    <Chip size="small" color="secondary" label="New $50" />
+                  </CardContent>
+                  {/* <CardMedia className={classes.cardMedia} image="/images/salesIcon.png" /> */}
+                </Grid>
+              </Card>
+            </Grid>
+          ) : (
+            <Grid item key={cardBool} xs={12} sm={6} md={3}>
+              <Card className={classes.card}>
+                <Grid container>
+                  <CardContent className={classes.cardContent}>
+                    <Typography variant="body2">
+                      <Skeleton className={classes.skelZIndex} />
+                    </Typography>
+                    <Typography variant="h6">
+                      <Skeleton className={classes.skelZIndex} />
+                    </Typography>
+                    <Skeleton className={classes.skelZIndex} variant="text">
+                      <Chip size="small" color="secondary" label="New $50" />
+                    </Skeleton>
+                  </CardContent>
+                  {/* <CardMedia className={classes.cardMedia} image="/images/salesIcon.png" /> */}
+                </Grid>
+              </Card>
+            </Grid>
+          )
+        )}
       </Grid>
       <Grid container spacing={4}>
         {cards.map((card) => (

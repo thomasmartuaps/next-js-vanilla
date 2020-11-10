@@ -11,8 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { globalTheme } from './base';
 
@@ -36,7 +35,7 @@ const useStyles = makeStyles((themeStyles) => ({
     minHeight: '100vh',
   },
   paper: {
-    marginTop: themeStyles.spacing(24),
+    marginTop: themeStyles.spacing(17),
     padding: themeStyles.spacing(6),
     display: 'flex',
     flexDirection: 'column',
@@ -57,35 +56,24 @@ const useStyles = makeStyles((themeStyles) => ({
 export default function SignIn(): JSX.Element {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const Router = useRouter();
   const classes = useStyles();
 
-  function usernameInput(event: React.ChangeEvent<HTMLInputElement>) {
+  function usernameInput(event: React.FormEvent<HTMLInputElement>) {
     // eslint-disable-next-line
     console.log(event.target.value);
     setUsername(event.target.value);
   }
 
-  function passInput(event: React.ChangeEvent<HTMLInputElement>) {
+  function passInput(event: React.FormEvent<HTMLInputElement>) {
     // eslint-disable-next-line
     console.log(event.target.value);
     setPassword(event.target.value);
   }
 
-  function submitLogin(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function submitLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // eslint-disable-next-line
-    console.log('submitting');
     sessionStorage.setItem('token', 'faketoken');
   }
-
-  useEffect(() => {
-    if (sessionStorage.getItem('token')) {
-      Router.push('/');
-    } else {
-      Router.push('/signin');
-    }
-  });
 
   return (
     <ThemeProvider theme={globalTheme}>
@@ -98,9 +86,34 @@ export default function SignIn(): JSX.Element {
               className={classes.avatar}
             />
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign up
             </Typography>
             <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="fname"
+                    name="firstName"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="lname"
+                  />
+                </Grid>
+              </Grid>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -110,8 +123,7 @@ export default function SignIn(): JSX.Element {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => usernameInput(e)}
-                autoFocus
+                onChange={usernameInput}
               />
               <TextField
                 variant="outlined"
@@ -122,18 +134,19 @@ export default function SignIn(): JSX.Element {
                 label="Password"
                 type="password"
                 id="password"
-                onChange={(e) => passInput(e)}
+                onChange={passInput}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
               <Button
+                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={(e) => submitLogin(e)}
+                onSubmit={submitLogin}
               >
                 Sign In
               </Button>

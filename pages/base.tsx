@@ -9,7 +9,9 @@ import {
   withStyles,
 } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import clsx from 'clsx';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 import Content from '../components/Content';
 import Header from '../components/Header';
@@ -30,9 +32,9 @@ function Copyright() {
 let theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#63ccff',
-      main: '#009be5',
-      dark: '#006db3',
+      light: '#de1b1b',
+      main: '#ba0d0d',
+      dark: '#661414',
     },
   },
   typography: {
@@ -154,11 +156,59 @@ const styles = createStyles({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+    paddingLeft: drawerWidth,
   },
   main: {
     flex: 1,
     padding: theme.spacing(6, 4),
+    marginTop: theme.spacing(8),
     background: '#eaeff1',
+  },
+  header: {
+    // transition: theme.transitions.create('margin', {
+    //   easing: theme.transitions.easing.sharp,
+    //   duration: theme.transitions.duration.leavingScreen,
+    // }),
+    // marginLeft: -drawerWidth,
+    // paddingLeft: drawerWidth,
+    // width: '100vw',
+    // transition: theme.transitions.create(['margin', 'width'], {
+    //   easing: theme.transitions.easing.sharp,
+    //   duration: theme.transitions.duration.leavingScreen,
+    // }),
+    position: 'fixed',
+    zIndex: 100,
+  },
+  // appBarShift: {
+  // transition: theme.transitions.create('margin', {
+  //   easing: theme.transitions.easing.easeOut,
+  //   duration: theme.transitions.duration.enteringScreen,
+  // }),
+  // marginLeft: 0,
+  // paddingLeft: 0,
+  // width: `calc(100% - ${drawerWidth}px)`,
+  // marginLeft: drawerWidth,
+  // transition: theme.transitions.create(['margin', 'width'], {
+  //   easing: theme.transitions.easing.easeOut,
+  //   duration: theme.transitions.duration.enteringScreen,
+  // }),
+  // },
+  appShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+  barPad: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    width: '100vw',
   },
   footer: {
     padding: theme.spacing(2),
@@ -172,15 +222,23 @@ function Base(props: PaperbaseProps) {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const Router = useRouter();
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('token')) {
+      Router.push('/signin');
+    }
+  });
 
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <nav className={classes.drawer}>
+        <div>
           <Hidden smUp implementation="js">
             <Navigator
               PaperProps={{ style: { width: drawerWidth } }}
@@ -189,12 +247,24 @@ function Base(props: PaperbaseProps) {
               onClose={handleDrawerToggle}
             />
           </Hidden>
-          <Hidden xsDown implementation="css">
-            <Navigator PaperProps={{ style: { width: drawerWidth } }} />
+          <Hidden xsDown implementation="js">
+            <Navigator
+              PaperProps={{ style: { width: drawerWidth } }}
+              variant="persistent"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+            />
           </Hidden>
-        </nav>
-        <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} />
+        </div>
+        <div
+          className={clsx(classes.app, {
+            [classes.appShift]: mobileOpen,
+          })}
+        >
+          <div className={classes.header}>
+            <Header opened={mobileOpen} onDrawerToggle={handleDrawerToggle} />
+          </div>
+
           <main className={classes.main}>
             <Content />
           </main>
@@ -206,5 +276,7 @@ function Base(props: PaperbaseProps) {
     </ThemeProvider>
   );
 }
+
+export const globalTheme = theme;
 
 export default withStyles(styles)(Base);
