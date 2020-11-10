@@ -27,6 +27,15 @@
       ],
       "@styles/*": [
         "./styles/*"
+      ],
+      "@uploads/*": [
+        "./uploads/*"
+      ],
+      "@middlewares/*": [
+        "./middlewares/*"
+      ],
+      "@utilities": [
+        "./utilities/*"
       ]
     },
     "resolveJsonModule": true,

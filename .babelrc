@@ -14,7 +14,9 @@
           "@pages": "./pages",
           "@public": "./public",
           "@styles": "./styles",
-          "@configJWT": "./configJWT"
+          "@uploads": "./uploads",
+          "@middlewares": "./middlewares",
+          "@utilities": "./utilities"
         }
       }
     ]
