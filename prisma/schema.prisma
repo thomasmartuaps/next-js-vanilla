@@ -12,3 +12,24 @@ model User {
   username  String
   passwords String
 }
+
+model Content {
+  id               Int       @id @default(autoincrement())
+  title            String?
+  descriptions     String?
+  author           Int
+  eventdate        DateTime?
+  publishdate      DateTime  @default(dbgenerated())
+  contentphoto     String?
+  contentvideo     String?
+  contentphototype String?
+}
+
+model Profile {
+  id         Int    @id @default(autoincrement())
+  handphone  String
+  alamat     String
+  avatar     String
+  userid     Int
+  avatartype String
+}

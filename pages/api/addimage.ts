@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import middlewares from '@middlewares/index';
 import { PrismaClient } from '@prisma/client';
-import imgtype from '@utilities/filetype';
+import imgtype from '@utils/filetype';
 import * as fs from 'fs-extra';
-import { NextApiRequest, NextApiResponse } from 'next';
-import nextConnect, { NextConnect } from 'next-connect';
-import * as path from 'path';
+import moment from 'moment';
+import nextConnect from 'next-connect';
 
 export const config = {
   api: {
@@ -31,24 +30,30 @@ async function insertProfile(
 }
 
 handler.post(async (req: any, res: any) => {
+  let path: string;
+  const { files } = req;
+  const { body } = req;
+  console.log(files);
+  console.log(body);
   try {
-    const { files } = req;
-    const { body } = req;
     // do stuff with files and body
-    // console.log(files);
-    // console.log(body);
     const imageType = imgtype(files.avatar.type);
     const rawData = fs.readFileSync(files.avatar.path);
-    await fs.writeFile(`uploads/avatar/gisel.${imageType}`, rawData, (err) => {
-      if (!err) {
-        console.log('uploaded');
+    path = `uploads/avatar/${moment(new Date()).format('YYYY/MM')}`;
+    fs.mkdirpSync(path);
+    await fs.writeFile(
+      `${path}/avatar_${body.userId}.${imageType}`,
+      rawData,
+      (err) => {
+        if (!err) {
+          res.status(200).json({
+            body,
+            files,
+          });
+        }
       }
+    );
 
-      res.status(200).json({
-        body,
-        files,
-      });
-    });
     // cetak gambar ke folder uploads sama masukin ke db profile
   } catch (err) {
     res.status(400).json({ error: err.message });

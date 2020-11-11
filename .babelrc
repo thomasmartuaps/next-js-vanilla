@@ -16,7 +16,7 @@
           "@styles": "./styles",
           "@uploads": "./uploads",
           "@middlewares": "./middlewares",
-          "@utilities": "./utilities"
+          "@utils": "./utils"
         }
       }
     ]
