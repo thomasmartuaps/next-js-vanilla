@@ -162,7 +162,7 @@ function Header(props: HeaderProps): JSX.Element {
                 color="inherit"
                 size="medium"
               >
-                <Badge badgeContent={4} color="secondary">
+                <Badge badgeContent={4} color="primary">
                   <SmsIcon />
                 </Badge>
               </Button>
@@ -174,7 +174,7 @@ function Header(props: HeaderProps): JSX.Element {
                 color="inherit"
                 size="medium"
               >
-                <Badge badgeContent={4} color="secondary">
+                <Badge badgeContent={4} color="primary">
                   <NotificationsActiveIcon />
                 </Badge>
               </Button>

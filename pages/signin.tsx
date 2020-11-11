@@ -1,3 +1,4 @@
+import { theme } from '@components/DashboardLayout';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -14,8 +15,6 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-
-import { globalTheme } from './base';
 
 function Copyright(): JSX.Element {
   return (
@@ -103,7 +102,7 @@ export default function SignIn(): JSX.Element {
   });
 
   return (
-    <ThemeProvider theme={globalTheme}>
+    <ThemeProvider theme={theme}>
       <div className={classes.background}>
         <Container component="main" maxWidth="sm">
           <CssBaseline />

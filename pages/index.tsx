@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
     if (!token) {
       Router.push('/signin');
     } else {
-      Router.push('/base');
+      Router.push('/dashboard');
     }
   });
   return <> </>;

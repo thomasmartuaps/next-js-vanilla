@@ -1,6 +1,7 @@
 import Content from '@components/Content';
 import Header from '@components/Header';
 import Navigator from '@components/Navigator';
+import Users from '@components/Users';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Link from '@material-ui/core/Link';
@@ -13,6 +14,7 @@ import {
 } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -28,12 +30,17 @@ function Copyright() {
   );
 }
 
-let theme = createMuiTheme({
+let baseTheme = createMuiTheme({
   palette: {
     primary: {
       light: '#de1b1b',
       main: '#ba0d0d',
       dark: '#661414',
+    },
+    secondary: {
+      light: '#3BA064',
+      main: '#20693E',
+      dark: '#112C1C',
     },
   },
   typography: {
@@ -58,8 +65,8 @@ let theme = createMuiTheme({
   },
 });
 
-theme = {
-  ...theme,
+baseTheme = {
+  ...baseTheme,
   overrides: {
     MuiDrawer: {
       paper: {
@@ -79,13 +86,13 @@ theme = {
     },
     MuiTabs: {
       root: {
-        marginLeft: theme.spacing(1),
+        marginLeft: baseTheme.spacing(1),
       },
       indicator: {
         height: 3,
         borderTopLeftRadius: 3,
         borderTopRightRadius: 3,
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: baseTheme.palette.common.white,
       },
     },
     MuiTab: {
@@ -94,7 +101,7 @@ theme = {
         margin: '0 16px',
         minWidth: 0,
         padding: 0,
-        [theme.breakpoints.up('md')]: {
+        [baseTheme.breakpoints.up('md')]: {
           padding: 0,
           minWidth: 0,
         },
@@ -102,7 +109,7 @@ theme = {
     },
     MuiIconButton: {
       root: {
-        padding: theme.spacing(1),
+        padding: baseTheme.spacing(1),
       },
     },
     MuiTooltip: {
@@ -117,7 +124,7 @@ theme = {
     },
     MuiListItemText: {
       primary: {
-        fontWeight: theme.typography.fontWeightMedium,
+        fontWeight: baseTheme.typography.fontWeightMedium,
       },
     },
     MuiListItemIcon: {
@@ -138,9 +145,11 @@ theme = {
   },
 };
 
+export const theme = baseTheme;
+
 const drawerWidth = 256;
 
-const styles = createStyles({
+export const styles = createStyles({
   root: {
     display: 'flex',
     minHeight: '100vh',
@@ -192,9 +201,15 @@ const styles = createStyles({
 
 export type PaperbaseProps = WithStyles<typeof styles>;
 
-function Base(props: PaperbaseProps) {
-  const { classes } = props;
+type LayoutProps = {
+  children: React.ReactNode;
+  classes: typeof styles;
+};
+
+function DashboardLayout(props: LayoutProps) {
+  const { classes, children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [pageNow, setPageNow] = React.useState('Users');
 
   const Router = useRouter();
 
@@ -202,8 +217,14 @@ function Base(props: PaperbaseProps) {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleNavButton = (currentPage: string) => {
+    setPageNow(currentPage);
+  };
+
   useEffect(() => {
-    if (!sessionStorage.getItem('token')) Router.push('/signin');
+    if (!sessionStorage.getItem('token')) {
+      Router.push('/signin');
+    }
   });
 
   return (
@@ -217,6 +238,7 @@ function Base(props: PaperbaseProps) {
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              onPageButtonClick={handleNavButton}
             />
           </Hidden>
           <Hidden xsDown implementation="js">
@@ -225,6 +247,7 @@ function Base(props: PaperbaseProps) {
               variant="persistent"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              onPageButtonClick={handleNavButton}
             />
           </Hidden>
         </div>
@@ -236,19 +259,11 @@ function Base(props: PaperbaseProps) {
           <div className={classes.header}>
             <Header opened={mobileOpen} onDrawerToggle={handleDrawerToggle} />
           </div>
-
-          <main className={classes.main}>
-            <Content />
-          </main>
-          <footer className={classes.footer}>
-            <Copyright />
-          </footer>
+          <main className={classes.main}>{children}</main>
         </div>
       </div>
     </ThemeProvider>
   );
 }
 
-export const globalTheme = theme;
-
-export default withStyles(styles)(Base);
+export default withStyles(styles)(DashboardLayout);

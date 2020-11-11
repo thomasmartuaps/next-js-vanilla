@@ -31,10 +31,10 @@ const categories = [
   {
     id: 'Application',
     children: [
-      { id: 'User', icon: <PeopleIcon />, active: true },
-      { id: 'Artikel', icon: <DnsRoundedIcon /> },
-      { id: 'Banner', icon: <PermMediaOutlinedIcon /> },
-      { id: 'Event', icon: <PublicIcon /> },
+      { id: 'Users', icon: <PeopleIcon />, active: true },
+      { id: 'Content', icon: <DnsRoundedIcon /> },
+      // { id: 'Banner', icon: <PermMediaOutlinedIcon /> },
+      // { id: 'Event', icon: <PublicIcon /> },
     ],
   },
   {
@@ -60,6 +60,10 @@ const styles = (theme: Theme) =>
       background: '#ffffff',
       color: '#707a89',
     },
+    logoTelkom: {
+      height: theme.spacing(8),
+      width: 'auto',
+    },
     item: {
       paddingTop: 1,
       paddingBottom: 1,
@@ -71,16 +75,21 @@ const styles = (theme: Theme) =>
       paddingTop: 1,
       paddingBottom: 1,
     },
-    itemFlex: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-    },
     itemCategory: {
       backgroundColor: '#FFFFFF',
       boxShadow: '0 -1px 0 #EBEFF5 inset',
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
+      color: '#707A89',
+    },
+    itemLogo: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF',
+      boxShadow: '0 -1px 0 #EBEFF5 inset',
+      paddingTop: 1,
+      paddingBottom: 1,
       color: '#707A89',
     },
     firebase: {
@@ -105,19 +114,29 @@ const styles = (theme: Theme) =>
 
 export interface NavigatorProps
   extends Omit<DrawerProps, 'classes'>,
-    WithStyles<typeof styles> {}
+    WithStyles<typeof styles> {
+  onPageButtonClick: (currentPage: string) => void;
+}
 
 function Navigator(props: NavigatorProps) {
-  const { classes, ...other } = props;
+  const { classes, onPageButtonClick, ...other } = props;
   const Router = useRouter();
 
-  function logOut(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  const logOut = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
     sessionStorage.clear();
     if (!sessionStorage.getItem('token')) {
       Router.push('/');
     }
-  }
+  };
+
+  const goToPage = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    pageName: string
+  ) => {
+    event.preventDefault();
+    Router.push(`/dashboard/${pageName}`);
+  };
 
   return (
     <Drawer
@@ -133,12 +152,16 @@ function Navigator(props: NavigatorProps) {
             classes.firebase,
             classes.itemNoHover,
             classes.itemCategory,
-            classes.itemFlex
+            classes.itemLogo
           )}
         >
-          <ListItemAvatar>
-            <Avatar src="/images/logogram-telkom-warna.png" alt="M" />
-          </ListItemAvatar>
+          {/* <ListItemAvatar> */}
+          <img
+            className={classes.logoTelkom}
+            src="/images/logo-telkom-warna.png"
+            alt="M"
+          />
+          {/* </ListItemAvatar> */}
         </ListItem>
         <ListItem
           className={clsx(classes.firebase, classes.item, classes.itemCategory)}
@@ -192,6 +215,7 @@ function Navigator(props: NavigatorProps) {
                 key={childId}
                 button
                 className={clsx(classes.item, active && classes.itemActiveItem)}
+                onClick={(e) => goToPage(e, childId.toLowerCase())}
               >
                 <ListItemIcon className={classes.itemIcon}>{icon}</ListItemIcon>
                 <ListItemText
