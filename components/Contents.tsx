@@ -22,6 +22,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import SearchIcon from '@material-ui/icons/Search';
 import Skeleton from '@material-ui/lab/Skeleton';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 function createData(
@@ -45,9 +46,9 @@ const rows = [
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      maxWidth: 936,
-      margin: 'auto',
-      marginTop: theme.spacing(8),
+      maxWidth: '100%',
+      margin: 0,
+      // marginTop: theme.spacing(8),
       overflow: 'hidden',
     },
     searchBar: {
@@ -138,6 +139,8 @@ function Users(props: ContentProps) {
   const [dummies, setDummies] = useState(contentContainer);
   const [loading, setLoading] = useState(false);
 
+  const Router = useRouter();
+
   useEffect(() => {
     setLoading(true);
     setDummies(dummyContent);
@@ -147,6 +150,7 @@ function Users(props: ContentProps) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        token: sessionStorage.getItem('token'),
       },
     })
       .then((res) => {
@@ -159,6 +163,13 @@ function Users(props: ContentProps) {
         console.log(e);
       });
   }, []);
+
+  const goToCreateContent = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    Router.push('/dashboard/content/create');
+  };
 
   return (
     <>
@@ -189,8 +200,9 @@ function Users(props: ContentProps) {
                   variant="contained"
                   color="primary"
                   className={classes.addUser}
+                  onClick={(e) => goToCreateContent(e)}
                 >
-                  Add user
+                  Add content
                 </Button>
                 <Tooltip title="Reload">
                   <IconButton>
@@ -207,7 +219,7 @@ function Users(props: ContentProps) {
               <TableRow>
                 <TableCell>id</TableCell>
                 <TableCell align="right">Title</TableCell>
-                <TableCell align="right">Description</TableCell>
+                <TableCell align="right">Link</TableCell>
                 <TableCell align="right">Author</TableCell>
                 <TableCell align="right">Event Date</TableCell>
                 <TableCell align="right">Published Date</TableCell>
@@ -222,7 +234,7 @@ function Users(props: ContentProps) {
                     {content.id}
                   </TableCell>
                   <TableCell align="right">{content.title}</TableCell>
-                  <TableCell align="right">{content.description}</TableCell>
+                  <TableCell align="right">click here.</TableCell>
                   <TableCell align="right">{content.author}</TableCell>
                   <TableCell align="right">{content.eventDate}</TableCell>
                   <TableCell align="right">{content.publishDate}</TableCell>
@@ -232,6 +244,10 @@ function Users(props: ContentProps) {
                       color="secondary"
                       variant="contained"
                       disableElevation
+                      onClick={(e) => {
+                        e.preventDefault();
+                        Router.push(`/dashboard/content/update/${content.id}`);
+                      }}
                     >
                       Edit
                     </Button>

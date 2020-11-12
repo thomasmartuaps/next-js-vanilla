@@ -17,11 +17,6 @@ import DnsRoundedIcon from '@material-ui/icons/DnsRounded';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
 import PeopleIcon from '@material-ui/icons/People';
-import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
-import PermMediaOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActual';
-import PublicIcon from '@material-ui/icons/Public';
-import SettingsIcon from '@material-ui/icons/Settings';
-import TimerIcon from '@material-ui/icons/Timer';
 import { Omit } from '@material-ui/types';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
@@ -29,7 +24,7 @@ import React from 'react';
 
 const categories = [
   {
-    id: 'Application',
+    id: '',
     children: [
       { id: 'Users', icon: <PeopleIcon />, active: true },
       { id: 'Content', icon: <DnsRoundedIcon /> },
@@ -37,14 +32,14 @@ const categories = [
       // { id: 'Event', icon: <PublicIcon /> },
     ],
   },
-  {
-    id: 'Quality',
-    children: [
-      { id: 'Analytics', icon: <SettingsIcon /> },
-      { id: 'Performance', icon: <TimerIcon /> },
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-    ],
-  },
+  // {
+  //   id: 'Quality',
+  //   children: [
+  //     { id: 'Analytics', icon: <SettingsIcon /> },
+  //     { id: 'Performance', icon: <TimerIcon /> },
+  //     { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
+  //   ],
+  // },
 ];
 
 const styles = (theme: Theme) =>
@@ -88,8 +83,8 @@ const styles = (theme: Theme) =>
       justifyContent: 'center',
       backgroundColor: '#FFFFFF',
       boxShadow: '0 -1px 0 #EBEFF5 inset',
-      paddingTop: 1,
-      paddingBottom: 1,
+      paddingTop: 4,
+      paddingBottom: 4,
       color: '#707A89',
     },
     firebase: {

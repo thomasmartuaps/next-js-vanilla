@@ -1,3 +1,4 @@
+import { Paper } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -17,11 +18,13 @@ import React, { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(6),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
+    minWidth: '95%',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -54,10 +57,7 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
           Add new user
         </Typography>
@@ -138,7 +138,7 @@ export default function SignUp() {
             Add User
           </Button>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }

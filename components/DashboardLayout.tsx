@@ -173,9 +173,10 @@ export const styles = createStyles({
   },
   main: {
     flex: 1,
-    padding: theme.spacing(6, 4),
+    padding: theme.spacing(2, 2),
     marginTop: theme.spacing(8),
     background: '#eaeff1',
+    // background: '#FFFFFF',
   },
   header: {
     position: 'fixed',
@@ -208,7 +209,7 @@ type LayoutProps = {
 
 function DashboardLayout(props: LayoutProps) {
   const { classes, children } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(true);
   const [pageNow, setPageNow] = React.useState('Users');
 
   const Router = useRouter();

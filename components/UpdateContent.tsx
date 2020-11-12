@@ -3,7 +3,6 @@ import 'moment';
 import MomentUtils from '@date-io/moment';
 import { Paper } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,8 +15,9 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+import Axios from 'axios';
 import dynamic from 'next/dynamic';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const importJodit = () => import('jodit-react');
 
@@ -55,8 +55,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+type UpdateContentProps = {
+  contentId: number;
+};
+
+type ContentData = {
+  id: number;
+  title: string;
+  description: string;
+  author: string;
+  eventDate: any;
+  publishDate: any;
+  contentVideo: string;
+};
+
+export default function UpdateUser(props: UpdateContentProps) {
+  const { contentId } = props;
   const classes = useStyles();
+  const [user, setUser] = useState();
   const [role, setRole] = useState('');
   const editor = useRef(null);
   const [content, setContent] = useState('');
@@ -66,6 +82,24 @@ export default function SignUp() {
   const [publishedDate, setPublishedDate] = React.useState<Date | null>(
     new Date('2014-08-18T21:11:54')
   );
+
+  useEffect(() => {
+    Axios({
+      method: 'GET',
+      url: '',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: sessionStorage.getItem('token'),
+      },
+    })
+      .then((res) => {
+        console.log(res.data.content);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   const eventDateChange = (date: Date | null) => {
     setEventDate(date);
@@ -85,7 +119,7 @@ export default function SignUp() {
         <CssBaseline />
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Add new content
+            Edit Content -ContentTitle-
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -107,9 +141,9 @@ export default function SignUp() {
                   value={content || ''}
                   config={config}
                   tabIndex={-2} // tabIndex of textarea
-                  onBlur={(newContent) => {
-                    setContent(newContent.originalTarget.innerHTML || '');
-                    console.log(newContent.originalTarget.innerHTML);
+                  onBlur={(event) => {
+                    setContent(event.originalTarget.innerHTML || '');
+                    console.log(event.originalTarget.innerHTML);
                   }} // preferred to use only this option to update the content for performance reasons
                   // onChange={(newContent) => {
                   //   setContent(newContent || '')
@@ -166,7 +200,7 @@ export default function SignUp() {
               color="primary"
               className={classes.submit}
             >
-              Add User
+              Edit
             </Button>
           </form>
         </Paper>

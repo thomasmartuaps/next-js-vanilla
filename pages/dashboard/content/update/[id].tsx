@@ -2,7 +2,7 @@ import Content from '@components/Content';
 import DashboardLayout, { styles } from '@components/DashboardLayout';
 import Header from '@components/Header';
 import Navigator from '@components/Navigator';
-import UpdateUser from '@components/UpdateUser';
+import UpdateContent from '@components/UpdateContent';
 import Users from '@components/Users';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
@@ -43,7 +43,7 @@ function UpdatePage(props: PaperbaseProps) {
   const Router = useRouter();
   const { id } = Router.query;
 
-  const userId = id as unknown;
+  const contentId = id as unknown;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -61,7 +61,7 @@ function UpdatePage(props: PaperbaseProps) {
 
   return (
     <DashboardLayout>
-      <UpdateUser userId={userId as number} />
+      <UpdateContent contentId={contentId as number} />
     </DashboardLayout>
   );
 }

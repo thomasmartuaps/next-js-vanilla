@@ -46,9 +46,9 @@ const rows = [
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      maxWidth: 936,
-      margin: 'auto',
-      marginTop: theme.spacing(8),
+      maxWidth: '100%',
+      margin: 0,
+      // marginTop: theme.spacing(8),
       overflow: 'hidden',
     },
     searchBar: {
@@ -114,6 +114,7 @@ function Users(props: ContentProps) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        token: sessionStorage.getItem('token'),
       },
     })
       .then((res) => {
@@ -194,7 +195,7 @@ function Users(props: ContentProps) {
                   <TableRow key={user.id}>
                     <TableCell component="th" scope="row">
                       <Skeleton>
-                        <Typography>Nope</Typography>
+                        <Typography>asdfasdf@Nutt.co.id</Typography>
                       </Skeleton>
                     </TableCell>
                     <TableCell align="right">
@@ -250,6 +251,10 @@ function Users(props: ContentProps) {
                         color="secondary"
                         variant="contained"
                         disableElevation
+                        onClick={(e) => {
+                          e.preventDefault();
+                          Router.push(`/dashboard/users/update/${user.id}`);
+                        }}
                       >
                         Edit
                       </Button>

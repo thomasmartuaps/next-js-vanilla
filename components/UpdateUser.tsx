@@ -1,3 +1,4 @@
+import { Paper } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -13,14 +14,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React, { useState } from 'react';
+import Axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(6),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -42,9 +46,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UpdateUser() {
+type UpdateUserProps = {
+  userId: number;
+};
+
+type UserData = {
+  id: number;
+  username: string;
+};
+
+export default function UpdateUser(props: UpdateUserProps) {
+  const { userId } = props;
   const classes = useStyles();
+  const [user, setUser] = useState();
   const [role, setRole] = useState('');
+
+  useEffect(() => {
+    Axios({
+      method: 'GET',
+      url: '',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: sessionStorage.getItem('token'),
+      },
+    })
+      .then((res) => {
+        console.log(res.data.user);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
 
   const handleRoleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setRole(event.target.value as string);
@@ -52,10 +85,7 @@ export default function UpdateUser() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
           Edit User -Username-
         </Typography>
@@ -136,7 +166,7 @@ export default function UpdateUser() {
             Edit
           </Button>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }

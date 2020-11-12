@@ -34,7 +34,7 @@ const drawerWidth = 256;
 
 export type PaperbaseProps = WithStyles<typeof styles>;
 
-function UsersPage(props: PaperbaseProps) {
+function CreateUserPage(props: PaperbaseProps) {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [pageNow, setPageNow] = React.useState('Users');
@@ -62,4 +62,4 @@ function UsersPage(props: PaperbaseProps) {
   );
 }
 
-export default withStyles(styles)(UsersPage);
+export default withStyles(styles)(CreateUserPage);

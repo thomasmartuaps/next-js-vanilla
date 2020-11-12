@@ -1,12 +1,8 @@
 import { theme } from '@components/DashboardLayout';
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -33,17 +29,18 @@ const useStyles = makeStyles((themeStyles) => ({
     position: 'fixed',
     top: 0,
     width: '100%',
-    minHeight: '100vh',
+    // minHeight: '100vh',
   },
   paper: {
-    marginTop: themeStyles.spacing(24),
-    padding: themeStyles.spacing(6),
+    marginTop: themeStyles.spacing(20),
+    padding: themeStyles.spacing(10),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: themeStyles.spacing(1),
+  logoTelkom: {
+    height: theme.spacing(16),
+    width: 'auto',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -89,6 +86,7 @@ export default function SignIn(): JSX.Element {
         Router.push('/');
       })
       .catch((e) => {
+        // eslint-disable-next-line
         console.log(e);
       });
   };
@@ -107,9 +105,10 @@ export default function SignIn(): JSX.Element {
         <Container component="main" maxWidth="sm">
           <CssBaseline />
           <Paper className={classes.paper}>
-            <Avatar
-              src="/images/logogram-telkom-warna.png"
-              className={classes.avatar}
+            <img
+              alt="DigiCorpu"
+              src="/images/logo-telkom-warna.png"
+              className={classes.logoTelkom}
             />
             <Typography component="h1" variant="h5">
               Sign in
@@ -138,10 +137,6 @@ export default function SignIn(): JSX.Element {
                 id="password"
                 onChange={(e) => passInput(e)}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
               <Button
                 fullWidth
                 variant="contained"
@@ -151,18 +146,6 @@ export default function SignIn(): JSX.Element {
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    Don&apos;t have an account? Sign Up
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </Paper>
           <Box mt={8}>

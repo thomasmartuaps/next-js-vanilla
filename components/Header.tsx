@@ -65,13 +65,14 @@ const styles = (theme: Theme) =>
       color: 'inherit',
     },
     barPad: {
-      paddingTop: theme.spacing(1),
+      paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(1),
       width: '100vw',
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      boxShadow: '0 -1px 0 #EBEFF5 inset',
     },
     barPadShift: {
       width: `calc(100vw - ${drawerWidth}px)`,
@@ -135,7 +136,7 @@ function Header(props: HeaderProps): JSX.Element {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Authentication
+                Admin DigiCorpu
               </Typography>
             </Grid>
             <Hidden xsDown>
