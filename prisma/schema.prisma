@@ -8,9 +8,11 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   username  String
   passwords String
+  Content   Content[]
+  Profile   Profile[]
 }
 
 model Content {
@@ -23,6 +25,7 @@ model Content {
   contentphoto     String?
   contentvideo     String?
   contentphototype String?
+  User             User      @relation(fields: [author], references: [id])
 }
 
 model Profile {
@@ -30,6 +33,7 @@ model Profile {
   handphone  String
   alamat     String
   avatar     String
-  userid     Int
+  userid     Int?
   avatartype String
+  User       User?  @relation(fields: [userid], references: [id])
 }

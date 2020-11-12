@@ -10,17 +10,23 @@ CREATE TABLE IF NOT EXISTS "public"."Profile"(
   alamat VARCHAR(255) NOT NULL,
   avatar VARCHAR(255) NOT NULL,
   userId INT,
-  avatarType VARCHAR(255) NOT NULL
+  avatarType VARCHAR(255) NOT NULL,
+  CONSTRAINT fk_user
+      FOREIGN KEY(userId) 
+	  REFERENCES "public"."User"(id)
 );
 
 CREATE TABLE IF NOT EXISTS "public"."Content"(
   id SERIAL PRIMARY KEY NOT NULL,
   title VARCHAR(255),
-  descriptions VARCHAR(255),
+  descriptions Text,
   author INT NOT NULL,
   eventDate DATE,
   publishDate DATE NOT NULL DEFAULT CURRENT_DATE,
   contentPhoto VARCHAR(255),
   contentVideo VARCHAR(255),
-  contentPhotoType VARCHAR(255)
+  contentPhotoType VARCHAR(255),
+  CONSTRAINT fk_user
+      FOREIGN KEY(author) 
+	  REFERENCES "public"."User"(id)
 );

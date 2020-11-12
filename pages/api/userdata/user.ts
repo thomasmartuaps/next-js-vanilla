@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -49,24 +49,34 @@ const addUserData = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 // Add User Done.
 // Get User
-let Users: unknown;
-async function getdata() {
-  Users = await prisma.user.findMany();
-}
-
 const getuser = (req: NextApiRequest, res: NextApiResponse): any => {
-  return getdata()
-    .catch((e) => {
-      res.status(400).json({
-        error: e,
+  try {
+    prisma.user
+      .findMany({
+        include: {
+          Profile: true,
+        },
+      })
+      .then((Users) => {
+        const data: any = [];
+        Users.map((User) => {
+          data.push(User);
+          delete data.passwords;
+        });
+        return res.status(200).json({
+          data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          message: error,
+        });
       });
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-      res.status(200).json({
-        data: Users,
-      });
+  } catch (error) {
+    res.status(400).json({
+      message: 'get data failed',
     });
+  }
 };
 // Get User Done
 // Update User
@@ -78,7 +88,6 @@ async function updateUser(
   const salt: any = process.env.NEXT_PUBLIC_SALT;
   let hashPass: string;
   // eslint-disable-next-line
-  console.log(username, password, id);
   bcrypt.hash(password, Number(salt), async (err, hash) => {
     hashPass = hash;
     await prisma.user.update({

@@ -29,22 +29,22 @@ handler.get(async (req: any, res: any) => {
   let data: any;
   const prKey = fs.readFileSync('configJWT/public.pem');
   await verify(token, prKey, { algorithms }, (err: any, decoded: any) => {
-    console.log('verified');
     userId = decoded.id;
-    prisma.profile
-      .findFirst({
+    prisma.user
+      .findOne({
         where: {
-          userid: userId,
+          id: userId,
+        },
+        include: {
+          Profile: true,
         },
       })
       .then((result) => {
         data = result;
       })
-      .catch((e) => {
-        console.log(e);
-      })
       .finally(() => {
         prisma.$disconnect();
+        delete data.passwords;
         return res.status(200).json({
           message: 'get Profile Success',
           data,
@@ -62,12 +62,10 @@ handler.post(async (req: any, res: any) => {
     const rawData = fs.readFileSync(files.avatar.path);
     const path = `uploads/avatar/${moment(new Date()).format('YYYY/MM')}`;
     const imageType = imgtype(files.avatar.type);
-    const imagePath = `${path}/avatar_${body.userId}.${imageType}`;
     const prKey = fs.readFileSync('configJWT/public.pem');
     const algorithms: any = 'HS256';
     let userId;
     await verify(token, prKey, { algorithms }, (err: any, decoded: any) => {
-      console.log('verified');
       userId = decoded.id;
     });
     const existData = await prisma.profile.findFirst({
@@ -77,11 +75,8 @@ handler.post(async (req: any, res: any) => {
     });
     if (!existData) {
       fs.mkdirpSync(path);
-      await fs.writeFile(imagePath, rawData, (err) => {
-        if (!err) {
-          console.log('uploaded');
-        }
-      });
+      const imagePath = `${path}/avatar_${userId}.${imageType}`;
+      await fs.writeFile(imagePath, rawData, (err) => {});
       prisma.profile
         .create({
           data: {
@@ -89,11 +84,12 @@ handler.post(async (req: any, res: any) => {
             handphone: body.handphone,
             avatar: imagePath,
             avatartype: files.avatar.type,
-            userid: Number(userId),
+            User: {
+              connect: {
+                id: userId,
+              },
+            },
           },
-        })
-        .catch((e) => {
-          console.log(e);
         })
         .finally(() => {
           prisma.$disconnect();
@@ -105,7 +101,6 @@ handler.post(async (req: any, res: any) => {
     }
   } catch (err) {
     res.status(400).json({ error: err.message });
-    console.log(err.message);
   }
   return res.status(200).json({
     message: 'add profile success!!',
@@ -119,10 +114,10 @@ handler.put(async (req: any, res: any) => {
   const rawData = fs.readFileSync(files.avatar.path);
   const path = `uploads/avatar/${moment(new Date()).format('YYYY/MM')}`;
   const imageType = imgtype(files.avatar.type);
-  const imagePath = `${path}/avatar_${body.userId}.${imageType}`;
   const prKey = fs.readFileSync('configJWT/public.pem');
   const algorithms: any = 'HS256';
   let userId;
+  let updatePath: string | undefined;
   await verify(token, prKey, { algorithms }, (err: any, decoded: any) => {
     userId = decoded.id;
   });
@@ -132,7 +127,7 @@ handler.put(async (req: any, res: any) => {
       userid: userId,
     },
   });
-  console.log(existData);
+  const imagePath = `${path}/avatar_${userId}.${imageType}`;
   if (existData) {
     await prisma.profile
       .findFirst({
@@ -144,7 +139,7 @@ handler.put(async (req: any, res: any) => {
         const delPath: any = paths.resolve(
           `${process.cwd()}/${result?.avatar}`
         );
-        console.log(delPath);
+        updatePath = result?.avatar;
         await fs.remove(delPath);
       })
       .finally(() => {
@@ -152,22 +147,22 @@ handler.put(async (req: any, res: any) => {
       });
     await prisma.profile
       .update({
+        where: {
+          id: Number(body.id),
+        },
         data: {
           alamat: body.alamat,
           handphone: body.handphone,
           avatar: imagePath,
           avatartype: files.avatar.type,
-          userid: Number(userId),
-        },
-        where: {
-          id: existData.id,
         },
       })
       .then(() => {
-        fs.writeFile(imagePath, rawData, (err) => {
-          if (!err) {
-            console.log('uploaded');
-          }
+        fs.writeFile(imagePath, rawData, (err) => {});
+      })
+      .catch((error) => {
+        res.status(400).json({
+          message: 'data does not exist',
         });
       })
       .finally(() => {
@@ -210,9 +205,9 @@ handler.delete(async (req: any, res: any) => {
             `${process.cwd()}/${userExist?.avatar}`
           );
           fs.remove(delPath);
-          return res.status(200).json({
-            message: 'delete success',
-          });
+          // return res.status(200).json({
+          //   message: 'delete success',
+          // });
         })
         .catch((err) => {
           res.status(400).json({

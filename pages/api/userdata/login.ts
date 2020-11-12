@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import fs from 'fs';
@@ -10,16 +8,17 @@ const prisma = new PrismaClient();
 let Users: any;
 let token: string;
 
-async function DBcheckUser(email: string) {
+async function DBcheckUser(username: string) {
+  console.log(username);
   Users = await prisma.user.findFirst({
     where: {
-      username: email,
+      username,
     },
   });
 }
 
 const post = (req: NextApiRequest, res: NextApiResponse): any => {
-  return DBcheckUser(req.body.email)
+  return DBcheckUser(req.body.username)
     .then(() => {
       return bcrypt.compare(
         req.body.password,
