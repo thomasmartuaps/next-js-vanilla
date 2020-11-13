@@ -29,17 +29,21 @@ const JoditEditor = dynamic(importJodit, {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(6),
+    // marginTop: theme.spacing(2),
+    padding: theme.spacing(12),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     minWidth: '95%',
+    height: '100%',
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
+  },
+  container: {
+    height: '100%',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -117,7 +121,7 @@ export default function UpdateUser(props: UpdateContentProps) {
 
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
-      <Container component="main">
+      <div>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
@@ -153,17 +157,6 @@ export default function UpdateUser(props: UpdateContentProps) {
                   // }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="author"
-                  label="Author"
-                  name="author"
-                  autoComplete="author"
-                />
-              </Grid>
               <Grid item xs={6}>
                 <KeyboardDatePicker
                   disableToolbar
@@ -174,21 +167,6 @@ export default function UpdateUser(props: UpdateContentProps) {
                   label="Event Date"
                   value={eventDate}
                   onChange={eventDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-inline"
-                  label="Published Date"
-                  value={publishedDate}
-                  onChange={publishedDateChange}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
@@ -206,7 +184,7 @@ export default function UpdateUser(props: UpdateContentProps) {
             </Button>
           </form>
         </Paper>
-      </Container>
+      </div>
     </MuiPickersUtilsProvider>
   );
 }

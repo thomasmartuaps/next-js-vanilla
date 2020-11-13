@@ -23,18 +23,23 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(6),
+    // marginTop: theme.spacing(2),
+    padding: theme.spacing(12),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     minWidth: '95%',
+    height: '100%',
   },
   formControl: {
     margin: theme.spacing(1),
     // backgroundColor: '#FFFFFF',
     minWidth: 200,
+  },
+  container: {
+    height: '100%',
+    width: '100%',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -46,10 +51,11 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -115,7 +121,7 @@ export default function AdminProfile(props: UserProfileProps) {
 
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
-      <Container component="main">
+      <div className={classes.container}>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
@@ -152,7 +158,7 @@ export default function AdminProfile(props: UserProfileProps) {
             </Button>
           </form>
         </Paper>
-      </Container>
+      </div>
     </MuiPickersUtilsProvider>
   );
 }
