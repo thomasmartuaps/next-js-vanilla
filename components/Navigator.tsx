@@ -88,6 +88,7 @@ const styles = (theme: Theme) =>
       paddingTop: 4,
       paddingBottom: 4,
       color: '#707A89',
+      height: theme.spacing(8),
     },
     firebase: {
       fontSize: 24,
@@ -135,6 +136,11 @@ function Navigator(props: NavigatorProps) {
     Router.push(`/dashboard/${pageName}`);
   };
 
+  const goToAdmin = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.preventDefault();
+    Router.push('/dashboard/admin');
+  };
+
   return (
     <Drawer
       variant="persistent"
@@ -162,6 +168,8 @@ function Navigator(props: NavigatorProps) {
         </ListItem>
         <ListItem
           className={clsx(classes.firebase, classes.item, classes.itemCategory)}
+          button
+          onClick={(e) => goToAdmin(e)}
         >
           <ListItemAvatar>
             <Avatar alt="M" />

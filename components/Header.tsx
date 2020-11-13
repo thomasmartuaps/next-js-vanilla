@@ -67,15 +67,17 @@ const styles = (theme: Theme) =>
       color: 'inherit',
     },
     barPad: {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(1),
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(2),
       width: '100vw',
+      height: theme.spacing(8),
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
       boxShadow: '0 -1px 0 #EBEFF5 inset',
       backgroundColor: '#FFFFFF',
+      color: '#000000',
     },
     barPadShift: {
       width: `calc(100vw - ${drawerWidth}px)`,
@@ -120,7 +122,6 @@ function Header(props: HeaderProps): JSX.Element {
     <>
       <AppBar
         component="div"
-        // color="default"
         className={clsx(classes.barPad, { [classes.barPadShift]: opened })}
         position="static"
         elevation={0}
@@ -142,73 +143,9 @@ function Header(props: HeaderProps): JSX.Element {
                 Admin DigiCorpu
               </Typography>
             </Grid>
-            <Hidden xsDown>
-              <Grid item>
-                <div className={classes.search}>
-                  <div className={classes.searchIcon}>
-                    <SearchIcon />
-                  </div>
-                  <InputBase
-                    placeholder="Search…"
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.inputInput,
-                    }}
-                    inputProps={{ 'aria-label': 'search' }}
-                  />
-                </div>
-              </Grid>
-            </Hidden>
-            <Grid item>
-              <Button
-                className={classes.button}
-                variant="outlined"
-                color="inherit"
-                size="medium"
-              >
-                <Badge badgeContent={4} color="primary">
-                  <SmsIcon />
-                </Badge>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                className={classes.button}
-                variant="outlined"
-                color="inherit"
-                size="medium"
-              >
-                <Badge badgeContent={4} color="primary">
-                  <NotificationsActiveIcon />
-                </Badge>
-              </Button>
-            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
-      <Hidden smUp>
-        <AppBar
-          color="light"
-          className={clsx(classes.barPad, { [classes.barPadShift]: opened })}
-          position="static"
-        >
-          <Grid item xs={12} sm={6}>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
-          </Grid>
-        </AppBar>
-      </Hidden>
     </>
   );
 }

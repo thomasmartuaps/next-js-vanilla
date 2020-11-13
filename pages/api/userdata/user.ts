@@ -28,8 +28,12 @@ async function checkUser(username: string) {
 }
 
 const addUserData = async (req: NextApiRequest, res: NextApiResponse) => {
+  // eslint-disable-next-line
+  console.log(req.body.username);
   const result = await checkUser(req.body.username);
   if (result) {
+    // eslint-disable-next-line
+    console.log(result);
     return res.status(400).json({
       message: 'user already exist',
     });

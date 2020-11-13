@@ -13,11 +13,13 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { TitleRounded } from '@material-ui/icons';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+import axios from 'axios';
 import dynamic from 'next/dynamic';
 import React, { useRef, useState } from 'react';
 
@@ -59,22 +61,59 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [role, setRole] = useState('');
   const editor = useRef(null);
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
   const [eventDate, setEventDate] = React.useState<Date | null>(
-    new Date('2014-08-18T21:11:54')
+    new Date(Date.now())
   );
   const [publishedDate, setPublishedDate] = React.useState<Date | null>(
-    new Date('2014-08-18T21:11:54')
+    new Date(Date.now())
   );
 
-  const eventDateChange = (date: Date | null) => {
-    setEventDate(date);
+  const titleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setTitle(event.target.value);
+    // eslint-disable-next-line
+    console.log(event.target.value);
   };
 
-  const publishedDateChange = (date: Date | null) => {
-    setPublishedDate(date);
+  const authorChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setAuthor(event.target.value);
+    // eslint-disable-next-line
+    console.log(event.target.value);
+  };
+  const eventDateChange = (event: MaterialUiPickersDate) => {
+    setEventDate(event.date);
+    // eslint-disable-next-line
+    console.log(event.date);
+  };
+
+  const publishedDateChange = (event: MaterialUiPickersDate) => {
+    setPublishedDate(event.date);
+    // eslint-disable-next-line
+    console.log(event.date);
+  };
+
+  const submitContent = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    console.log({
+      title,
+      description: content,
+      author,
+      eventDate,
+      publishedDate,
+    });
+    // axios({
+    //   method: 'POST',
+    //   url:
+    // })
   };
 
   const config = {
@@ -101,6 +140,7 @@ export default function SignUp() {
                   id="title"
                   label="Title"
                   autoFocus
+                  onChange={(e) => titleChange(e)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,6 +168,7 @@ export default function SignUp() {
                   label="Author"
                   name="author"
                   autoComplete="author"
+                  onChange={(e) => authorChange(e)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -139,7 +180,7 @@ export default function SignUp() {
                   id="date-picker-inline"
                   label="Event Date"
                   value={eventDate}
-                  onChange={eventDateChange}
+                  onChange={(e) => eventDateChange(e)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
@@ -154,7 +195,7 @@ export default function SignUp() {
                   id="date-picker-inline"
                   label="Published Date"
                   value={publishedDate}
-                  onChange={publishedDateChange}
+                  onChange={(e) => publishedDateChange(e)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
@@ -167,6 +208,7 @@ export default function SignUp() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={(e) => submitContent(e)}
             >
               Add User
             </Button>

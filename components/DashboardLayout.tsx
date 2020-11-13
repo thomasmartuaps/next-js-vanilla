@@ -175,7 +175,11 @@ export const styles = createStyles({
   },
   main: {
     flex: 1,
-    padding: theme.spacing(2, 2),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 15,
     marginTop: theme.spacing(8),
     background: '#eaeff1',
     // background: '#FFFFFF',
@@ -204,10 +208,9 @@ export const styles = createStyles({
 
 export type PaperbaseProps = WithStyles<typeof styles>;
 
-type LayoutProps = {
+interface LayoutProps extends WithStyles<typeof styles> {
   children: React.ReactNode;
-  classes: typeof styles;
-};
+}
 
 function DashboardLayout(props: LayoutProps) {
   const { classes, children } = props;

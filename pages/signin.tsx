@@ -26,14 +26,18 @@ function Copyright(): JSX.Element {
 
 const useStyles = makeStyles((themeStyles) => ({
   background: {
+    display: 'flex',
+    flexDirection: 'column',
     position: 'fixed',
     top: 0,
     width: '100%',
-    // minHeight: '100vh',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
   },
   paper: {
-    marginTop: themeStyles.spacing(20),
-    padding: themeStyles.spacing(10),
+    flex: 1,
+    padding: themeStyles.spacing(5),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -87,7 +91,7 @@ export default function SignIn(): JSX.Element {
       })
       .catch((e) => {
         // eslint-disable-next-line
-        console.log(e);
+        console.log(e.response.data, 'handle this error');
       });
   };
 
@@ -97,7 +101,7 @@ export default function SignIn(): JSX.Element {
     } else {
       Router.push('/signin');
     }
-  });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

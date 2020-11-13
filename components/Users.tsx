@@ -24,34 +24,17 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import SearchIcon from '@material-ui/icons/Search';
 import Skeleton from '@material-ui/lab/Skeleton';
 import axios from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      maxWidth: '100%',
+      width: '100%',
       margin: 0,
-      // marginTop: theme.spacing(8),
       overflow: 'hidden',
+      height: '100%',
     },
     searchBar: {
       borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
@@ -93,8 +76,8 @@ type UsersData = {
 
 const dummyUsers: UsersData[] = [
   { id: 1, username: 'asdfa' },
-  { id: 1, username: 'asdfa' },
-  { id: 1, username: 'asdfa' },
+  { id: 2, username: 'asdfa' },
+  { id: 3, username: 'asdfa' },
 ];
 
 const userContainer: UsersData[] = [];
@@ -118,15 +101,47 @@ function Users(props: ContentProps) {
         'Content-Type': 'application/json',
         token: sessionStorage.getItem('token'),
       },
-    }).then((res) => {
-      // eslint-disable-next-line
-        // console.log(res.data.data)
-      setUsers(res.data.data);
-      // eslint-disable-next-line
+    })
+      .then((res) => {
+        // eslint-disable-next-line
+        console.log(res.data.data);
+        setUsers(res.data.data);
+        // eslint-disable-next-line
         setLoading(false);
-      setDummies(userContainer);
-    });
-  }, [users]);
+        setDummies(userContainer);
+      })
+      .catch((e) => {
+        // eslint-disable-next-line
+        console.log(e.response);
+      });
+  }, []);
+
+  const deleteUser = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    userId: number
+  ) => {
+    event.preventDefault();
+    console.log(userId);
+    axios({
+      method: 'DELETE',
+      url: 'http://localhost:3000/api/userdata/user',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: sessionStorage.getItem('token'),
+      },
+      data: {
+        id: userId,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        Router.push('/');
+      })
+      .catch((e) => {
+        console.log(e.response);
+      });
+  };
 
   const goToCreateUser = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -146,18 +161,8 @@ function Users(props: ContentProps) {
         >
           <Toolbar>
             <Grid container spacing={2} alignItems="center">
-              <Grid item>
-                <SearchIcon className={classes.block} color="inherit" />
-              </Grid>
               <Grid item xs>
-                <TextField
-                  fullWidth
-                  placeholder="Search by email address, phone number, or user UID"
-                  InputProps={{
-                    disableUnderline: true,
-                    className: classes.searchInput,
-                  }}
-                />
+                <Typography>Users Table</Typography>
               </Grid>
               <Grid item>
                 <Button
@@ -168,11 +173,6 @@ function Users(props: ContentProps) {
                 >
                   Add user
                 </Button>
-                <Tooltip title="Reload">
-                  <IconButton>
-                    <RefreshIcon className={classes.block} color="inherit" />
-                  </IconButton>
-                </Tooltip>
               </Grid>
             </Grid>
           </Toolbar>
@@ -181,10 +181,10 @@ function Users(props: ContentProps) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
+                <TableCell align="center">id</TableCell>
                 <TableCell>Username (Email)</TableCell>
-                <TableCell align="right">id</TableCell>
-                <TableCell align="right">password</TableCell>
-                <TableCell align="right">Profile</TableCell>
+                <TableCell align="center">password</TableCell>
+                <TableCell align="center">Profile</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -192,45 +192,56 @@ function Users(props: ContentProps) {
               <TableBody>
                 {dummies.map((user) => (
                   <TableRow key={user.id}>
+                    <TableCell align="center">
+                      <Skeleton>
+                        <Typography>id</Typography>
+                      </Skeleton>
+                    </TableCell>
                     <TableCell component="th" scope="row">
                       <Skeleton>
                         <Typography>asdfasdf@Nutt.co.id</Typography>
                       </Skeleton>
                     </TableCell>
-                    <TableCell align="right">
-                      <Skeleton>
-                        <Typography>id</Typography>
-                      </Skeleton>
-                    </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Skeleton>
                         <Typography>Nope</Typography>
                       </Skeleton>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Skeleton>
                         <Typography>Profile</Typography>
                       </Skeleton>
                     </TableCell>
                     <TableCell align="center">
-                      <Skeleton>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          disableElevation
-                        >
-                          Edit
-                        </Button>
-                      </Skeleton>
-                      <Skeleton>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          disableElevation
-                        >
-                          Edit
-                        </Button>
-                      </Skeleton>
+                      <Grid
+                        container
+                        justify="center"
+                        alignItems="center"
+                        spacing={1}
+                      >
+                        <Grid item>
+                          <Skeleton>
+                            <Button
+                              color="secondary"
+                              variant="contained"
+                              disableElevation
+                            >
+                              Edit
+                            </Button>
+                          </Skeleton>
+                        </Grid>
+                        <Grid item>
+                          <Skeleton>
+                            <Button
+                              color="secondary"
+                              variant="contained"
+                              disableElevation
+                            >
+                              Edit
+                            </Button>
+                          </Skeleton>
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -239,31 +250,54 @@ function Users(props: ContentProps) {
               <TableBody>
                 {users.map((user) => (
                   <TableRow key={user.id}>
+                    <TableCell align="center">{user.id}</TableCell>
                     <TableCell component="th" scope="row">
                       {user.username}
                     </TableCell>
-                    <TableCell align="right">{user.id}</TableCell>
-                    <TableCell align="right">Nope</TableCell>
-                    <TableCell align="right">Profile</TableCell>
+                    <TableCell align="center">Nope</TableCell>
                     <TableCell align="center">
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        disableElevation
-                        onClick={(e) => {
-                          e.preventDefault();
-                          Router.push(`/dashboard/users/update/${user.id}`);
+                      <Link
+                        href={{
+                          pathname: '/dashboard/users/profile/[id]',
+                          query: { slug: user.id, user: user.username },
                         }}
                       >
-                        Edit
-                      </Button>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        disableElevation
+                        Profile
+                      </Link>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Grid
+                        container
+                        spacing={1}
+                        justify="center"
+                        alignItems="center"
                       >
-                        Delete
-                      </Button>
+                        <Grid item>
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            disableElevation
+                            onClick={(e) => {
+                              e.preventDefault();
+                              Router.push(
+                                `/dashboard/users/update/${user.id}?user=${user.username}`
+                              );
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            disableElevation
+                            onClick={(e) => deleteUser(e, user.id)}
+                          >
+                            Delete
+                          </Button>
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -1,22 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import CreateProfile from '@components/CreateProfile';
 import DashboardLayout, { styles } from '@components/DashboardLayout';
-import Header from '@components/Header';
-import Navigator from '@components/Navigator';
-import Users from '@components/Users';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Hidden from '@material-ui/core/Hidden';
 import Link from '@material-ui/core/Link';
-import {
-  createMuiTheme,
-  createStyles,
-  ThemeProvider,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core/styles';
+import { WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Copyright() {
   return (
@@ -29,8 +18,21 @@ function Copyright() {
     </Typography>
   );
 }
-function Dashboard(): JSX.Element {
+
+export type PaperbaseProps = WithStyles<typeof styles>;
+
+function CreateProfile(props: PaperbaseProps) {
+  const { classes } = props;
+  const [address, setAddress] = useState('Jl. Sungai Cakung');
+  const [phone, setPhone] = useState('081231251051');
+  const [avi, setAvi] = useState('@uploads/avatar/2020/11/avatar_2.jpeg');
+  const [aviType, setAviType] = useState('');
+
   const Router = useRouter();
+  const { id, user } = Router.query;
+
+  const userId = id as unknown;
+  const userName = user as unknown;
 
   useEffect(() => {
     if (!sessionStorage.getItem('token')) {
@@ -40,9 +42,9 @@ function Dashboard(): JSX.Element {
 
   return (
     <DashboardLayout>
-      <Users />
+      <CreateProfile />
     </DashboardLayout>
   );
 }
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(CreateProfile);

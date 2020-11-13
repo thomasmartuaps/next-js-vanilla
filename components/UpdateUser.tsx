@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Paper } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
@@ -16,7 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Axios from 'axios';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -50,72 +49,72 @@ const useStyles = makeStyles((theme) => ({
 
 type UpdateUserProps = {
   userId: number;
-};
-
-type UserData = {
-  id: number;
-  username: string;
+  userEdit: string;
 };
 
 export default function UpdateUser(props: UpdateUserProps) {
-  const { userId } = props;
+  const { userId, userEdit } = props;
   const classes = useStyles();
-  const [user, setUser] = useState();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
 
-  useEffect(() => {
-    Axios({
-      method: 'GET',
-      url: '',
+  const Router = useRouter();
+
+  const changeUsername = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setUsername(event.target.value);
+  };
+
+  const changePassword = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setPassword(event.target.value);
+  };
+
+  const handleRoleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setRole(event.target.value as string);
+  };
+
+  const editUser = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    console.log({
+      username,
+      password,
+    });
+    axios({
+      method: 'PUT',
+      url: 'http://localhost:3000/api/userdata/user',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         token: sessionStorage.getItem('token'),
       },
+      data: {
+        username,
+        password,
+        id: userId,
+      },
     })
       .then((res) => {
-        console.log(res.data.user);
+        console.log(res.data);
+        Router.push('/');
       })
       .catch((e) => {
-        console.log(e);
+        console.log(e.response);
       });
-  });
-
-  const handleRoleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setRole(event.target.value as string);
   };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Edit User -Username-
+          Edit User {userEdit}
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -124,6 +123,7 @@ export default function UpdateUser(props: UpdateUserProps) {
                 id="email"
                 label="Email Address"
                 name="email"
+                onChange={(e) => changeUsername(e)}
                 autoComplete="email"
               />
             </Grid>
@@ -136,6 +136,7 @@ export default function UpdateUser(props: UpdateUserProps) {
                 label="Password"
                 type="password"
                 id="password"
+                onChange={(e) => changePassword(e)}
                 autoComplete="current-password"
               />
             </Grid>
@@ -164,6 +165,7 @@ export default function UpdateUser(props: UpdateUserProps) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={(e) => editUser(e)}
           >
             Edit
           </Button>

@@ -48,9 +48,9 @@ const rows = [
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      maxWidth: '100%',
+      width: '100%',
       margin: 0,
-      // marginTop: theme.spacing(8),
+      height: '100%',
       overflow: 'hidden',
     },
     searchBar: {
@@ -162,7 +162,8 @@ function Users(props: ContentProps) {
         setLoading(false);
       })
       .catch((e) => {
-        console.log(e);
+        // eslint-disable-next-line
+        console.log(e.response, 'handle this error');
       });
   }, []);
 
@@ -184,18 +185,8 @@ function Users(props: ContentProps) {
         >
           <Toolbar>
             <Grid container spacing={2} alignItems="center">
-              <Grid item>
-                <SearchIcon className={classes.block} color="inherit" />
-              </Grid>
               <Grid item xs>
-                <TextField
-                  fullWidth
-                  placeholder="Search by email address, phone number, or user UID"
-                  InputProps={{
-                    disableUnderline: true,
-                    className: classes.searchInput,
-                  }}
-                />
+                <Typography>Contents Table</Typography>
               </Grid>
               <Grid item>
                 <Button
@@ -206,11 +197,6 @@ function Users(props: ContentProps) {
                 >
                   Add content
                 </Button>
-                <Tooltip title="Reload">
-                  <IconButton>
-                    <RefreshIcon className={classes.block} color="inherit" />
-                  </IconButton>
-                </Tooltip>
               </Grid>
             </Grid>
           </Toolbar>
@@ -220,12 +206,12 @@ function Users(props: ContentProps) {
             <TableHead>
               <TableRow>
                 <TableCell>id</TableCell>
-                <TableCell align="right">Title</TableCell>
-                <TableCell align="right">Link</TableCell>
-                <TableCell align="right">Author</TableCell>
-                <TableCell align="right">Event Date</TableCell>
-                <TableCell align="right">Published Date</TableCell>
-                <TableCell align="right">Video Link</TableCell>
+                <TableCell align="center">Title</TableCell>
+                <TableCell align="center">Link</TableCell>
+                <TableCell align="center">Author</TableCell>
+                <TableCell align="center">Event Date</TableCell>
+                <TableCell align="center">Published Date</TableCell>
+                <TableCell align="center">Video Link</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -235,31 +221,44 @@ function Users(props: ContentProps) {
                   <TableCell component="th" scope="row">
                     {content.id}
                   </TableCell>
-                  <TableCell align="right">{content.title}</TableCell>
-                  <TableCell align="right">click here.</TableCell>
-                  <TableCell align="right">{content.author}</TableCell>
-                  <TableCell align="right">{content.eventDate}</TableCell>
-                  <TableCell align="right">{content.publishDate}</TableCell>
-                  <TableCell align="right">{content.contentVideo}</TableCell>
+                  <TableCell align="center">{content.title}</TableCell>
+                  <TableCell align="center">click here.</TableCell>
+                  <TableCell align="center">{content.author}</TableCell>
+                  <TableCell align="center">{content.eventDate}</TableCell>
+                  <TableCell align="center">{content.publishDate}</TableCell>
+                  <TableCell align="center">{content.contentVideo}</TableCell>
                   <TableCell align="center">
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      disableElevation
-                      onClick={(e) => {
-                        e.preventDefault();
-                        Router.push(`/dashboard/content/update/${content.id}`);
-                      }}
+                    <Grid
+                      container
+                      justify="center"
+                      alignItems="center"
+                      spacing={1}
                     >
-                      Edit
-                    </Button>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      disableElevation
-                    >
-                      Delete
-                    </Button>
+                      <Grid item>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          disableElevation
+                          onClick={(e) => {
+                            e.preventDefault();
+                            Router.push(
+                              `/dashboard/content/update/${content.id}`
+                            );
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          disableElevation
+                        >
+                          Delete
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </TableCell>
                 </TableRow>
               ))}

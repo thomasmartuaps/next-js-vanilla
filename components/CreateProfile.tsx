@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateUser() {
+export default function CreateProfile() {
   const classes = useStyles();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -110,7 +110,7 @@ export default function CreateUser() {
       <CssBaseline />
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Add new user
+          Add new Profile
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -166,7 +166,7 @@ export default function CreateUser() {
             className={classes.submit}
             onClick={(e) => submitUser(e)}
           >
-            Add User
+            Add Profile
           </Button>
         </form>
       </Paper>
